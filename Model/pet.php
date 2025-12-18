@@ -33,6 +33,12 @@ class Pet
         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }
 
+    public function getPetCount()
+    {
+        $result = $this->conn->query("SELECT COUNT(*) as count FROM tbl_pets");
+        return $result->fetch_assoc()['count'];
+    }
+
     public function getPetById($pet_id)
     {
         $sql = "SELECT * FROM tbl_pets WHERE pet_id = ?";

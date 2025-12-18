@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         if ($result_add) {
             session_start();
             $_SESSION['ref_number'] = $result_add;
-            header("Location: ../View/RequestLostPet.php?submitted=1&step=3");
+            header("Location: ../View/CompleteSection.php?submitted=1");
             exit();
         }
     } else if (isset($_POST["approve-request"])) {

@@ -6,6 +6,7 @@
             <h3>Adoption Inquiry for <span id="petName"></span></h3>
             <button class="close-modal" id="closeModal">&times;</button>
         </div>
+
         <form id="adoptionForm" method="POST" action="../Controllers/action_request.php">
             <input type="hidden" name="pet_id" id="petId">
 

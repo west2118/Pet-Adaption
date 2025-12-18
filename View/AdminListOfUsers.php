@@ -70,7 +70,6 @@ $user = new User();
                                             echo $date->format("F j, Y") ?></td>
                                         <td class="actions">
                                             <a href="AdminAddUser.php?edit=<?php echo $row['user_id'] ?>" class="btn-edit"><i class="fa fa-edit"></i></a>
-                                            <button class="btn-delete" data-id="<?php echo $row['user_id']; ?>"><i class="fa fa-trash"></i></button>
                                         </td>
                                     </tr>
                                 <?php } ?>
@@ -83,7 +82,6 @@ $user = new User();
 
         <?php
         $deleteAction = '../Controllers/action_user.php';
-        include '../Includes/RemoveItemModal.php';
         ?>
 
         <script>

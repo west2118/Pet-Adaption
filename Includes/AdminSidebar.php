@@ -17,7 +17,7 @@
         <li><a href="../View/AdminDashboard.php" class="active"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
         <li><a href="../View/AdminPets.php"><i class="fas fa-dog"></i> <span>Manage Pets</span></a></li>
         <li><a href="../View/AdminAdoptionRequests.php"><i class="fas fa-file-alt"></i> <span>Adoption Requests</span></a></li>
-        <li><a href="../View/AdminListOfUsers.php"><i class="fas fa-users"></i> <span>Adoption Requests</span></a></li>
+        <li><a href="../View/AdminListOfUsers.php"><i class="fas fa-users"></i> <span>List of Admins</span></a></li>
     </ul>
 
     <div class="admin-info">

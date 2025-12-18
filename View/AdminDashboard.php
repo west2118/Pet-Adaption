@@ -80,41 +80,6 @@ $totalPendingRequests = $request->countPendingRequests();
             </div>
         </div>
 
-        <!-- Action Buttons -->
-        <!-- <div class="action-buttons">
-            <div class="action-button" id="addPetAction">
-                <div class="action-icon add">
-                    <i class="fas fa-plus"></i>
-                </div>
-                <h3>Add New Pet</h3>
-                <p>Add a new pet to the adoption listing</p>
-            </div>
-
-            <div class="action-button" id="managePetsAction">
-                <div class="action-icon manage">
-                    <i class="fas fa-edit"></i>
-                </div>
-                <h3>Manage Pets</h3>
-                <p>Edit pet details, update status, or remove pets</p>
-            </div>
-
-            <div class="action-button" id="viewRequestsAction">
-                <div class="action-icon requests">
-                    <i class="fas fa-inbox"></i>
-                </div>
-                <h3>Adoption Requests</h3>
-                <p>Review and process adoption inquiries</p>
-            </div>
-
-            <div class="action-button" id="generateReportsAction">
-                <div class="action-icon reports">
-                    <i class="fas fa-chart-pie"></i>
-                </div>
-                <h3>Generate Reports</h3>
-                <p>Create reports on adoptions and shelter stats</p>
-            </div>
-        </div> -->
-
         <!-- Recent Activity & Adoption Requests -->
         <div class="content-row">
             <!-- Recent Pets Table -->
@@ -137,18 +102,30 @@ $totalPendingRequests = $request->countPendingRequests();
                         <tbody>
                             <?php
                             $pets = $pet->getFiveRecentPets();
-                            foreach ($pets as $row) { ?>
+                            if (!empty($pets)) {
+                                foreach ($pets as $row) { ?>
+                                    <tr>
+                                        <td>
+                                            <div class="pet-name-cell">
+                                                <img src="<?php echo htmlspecialchars($row['photo']); ?>" class="pet-avatar">
+                                                <span><?php echo htmlspecialchars($row['petName']); ?></span>
+                                            </div>
+                                        </td>
+                                        <td><?php echo ucfirst(strtolower(htmlspecialchars($row['petType']))); ?></td>
+                                        <td><?php echo htmlspecialchars($row['age']); ?></td>
+                                        <td>
+                                            <span class="status-badge status-adopted">
+                                                <?php echo ucfirst(strtolower(htmlspecialchars($row['status']))); ?>
+                                            </span>
+                                        </td>
+                                        <td><?php echo htmlspecialchars($row['date_added']); ?></td>
+                                    </tr>
+                                <?php }
+                            } else { ?>
                                 <tr>
-                                    <td>
-                                        <div class="pet-name-cell">
-                                            <img src="<?php echo htmlspecialchars($row['photo']); ?>" alt="Rex" class="pet-avatar">
-                                            <span><?php echo htmlspecialchars($row['petName']); ?></span>
-                                        </div>
+                                    <td colspan="5" style="text-align:center; padding:20px; color:#777;">
+                                        No pets available 🐾
                                     </td>
-                                    <td><?php echo ucfirst(strtolower(htmlspecialchars($row['petType']))); ?></td>
-                                    <td><?php echo htmlspecialchars($row['age']); ?></td>
-                                    <td><span class="status-badge status-adopted"><?php echo ucfirst(strtolower(htmlspecialchars($row['status']))); ?></span></td>
-                                    <td><?php echo htmlspecialchars($row['date_added']); ?></td>
                                 </tr>
                             <?php } ?>
                         </tbody>
@@ -165,13 +142,27 @@ $totalPendingRequests = $request->countPendingRequests();
                 <div class="request-list">
                     <?php
                     $requests = $request->getLast4Requests();
-                    foreach ($requests as $row) { ?>
-                        <div class="request-item">
-                            <div class="request-info">
-                                <h4><?php echo htmlspecialchars($row['firstName'] . ' ' . $row['lastName']); ?></h4>
-                                <p><i class="fas fa-dog"></i> Interested in: <?php echo htmlspecialchars($row['petName']); ?> (<?php echo htmlspecialchars($row['breed']); ?>)</p>
-                                <p><i class="fas fa-clock"></i> Submitted: <?php echo htmlspecialchars($row['dateSubmitted']); ?></p>
+
+                    if (!empty($requests)) {
+                        foreach ($requests as $row) { ?>
+                            <div class="request-item">
+                                <div class="request-info">
+                                    <h4><?php echo htmlspecialchars($row['firstName'] . ' ' . $row['lastName']); ?></h4>
+                                    <p>
+                                        <i class="fas fa-dog"></i>
+                                        Interested in: <?php echo htmlspecialchars($row['petName']); ?>
+                                        (<?php echo htmlspecialchars($row['breed']); ?>)
+                                    </p>
+                                    <p>
+                                        <i class="fas fa-clock"></i>
+                                        Submitted: <?php echo htmlspecialchars($row['dateSubmitted']); ?>
+                                    </p>
+                                </div>
                             </div>
+                        <?php }
+                    } else { ?>
+                        <div class="request-item" style="display: flex; align-items: center; justify-content: center; text-align:center; padding:20px; color:#777;">
+                            No adoption requests yet 📭
                         </div>
                     <?php } ?>
                 </div>

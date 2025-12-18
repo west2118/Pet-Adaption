@@ -292,8 +292,7 @@ $pet = new Pet();
                                 class="form-textarea"
                                 name="description"
                                 placeholder="Describe the pet's personality, temperament, special needs, and any other important information..."
-                                required>
-                            </textarea>
+                                required></textarea>
                         </div>
 
                         <!-- Photo Upload -->

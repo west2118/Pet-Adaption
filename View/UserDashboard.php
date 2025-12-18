@@ -3,6 +3,24 @@
 include "../Model/pet.php";
 $pet = new Pet();
 
+// Pagination setup
+$limit = 9; // Number of pets per page
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$offset = ($page - 1) * $limit;
+
+$totalPets = $pet->getPetCount();
+$totalPages = max(1, ceil($totalPets / $limit));
+
+if ($page < 1) {
+    header("Location: ?page=1");
+    exit;
+} elseif ($page > $totalPages) {
+    header("Location: ?page=$totalPages");
+    exit;
+}
+
+$pets = $pet->getAllPetsPaginated($limit, $offset);
+
 ?>
 
 <!DOCTYPE html>
@@ -31,7 +49,7 @@ $pet = new Pet();
     <!-- Main Content -->
     <main class="container">
         <!-- Filter Section -->
-        <section class="filters">
+        <!-- <section class="filters">
             <div class="filter-container">
                 <div class="filter-group">
                     <label for="type-filter"><i class="fas fa-filter"></i> Pet Type</label>
@@ -60,7 +78,7 @@ $pet = new Pet();
                     </select>
                 </div>
             </div>
-        </section>
+        </section> -->
 
         <!-- Available Pets Section -->
         <h2 class="section-title">Available Pets</h2>
@@ -68,7 +86,6 @@ $pet = new Pet();
         <div class="pets-grid">
             <!-- Pet Card 1 -->
             <?php
-            $pets = $pet->getAllAvailablePets();
             foreach ($pets as $row) { ?>
                 <div class="pet-card">
                     <img src="<?php echo htmlspecialchars($row['photo']); ?>" alt="Golden Retriever" class="pet-image">
@@ -83,18 +100,51 @@ $pet = new Pet();
                             <p><i class="fas fa-syringe"></i> <strong>Vaccinated:</strong> <span><?php echo htmlspecialchars($row['vaccinated'] == 1) ? "Yes" : "No"; ?></span></p>
                         </div>
                         <div class="pet-actions">
-                            <button class="btn btn-details"><i class="fas fa-info-circle"></i> View Details</button>
+                            <button class="btn btn-details btn-view" data-id="<?= $row['pet_id']; ?>"
+                                data-name="<?= htmlspecialchars($row['petName']); ?>"
+                                data-type="<?= htmlspecialchars($row['petType']); ?>"
+                                data-breed="<?= htmlspecialchars($row['breed']); ?>"
+                                data-age="<?= htmlspecialchars($row['age']); ?>"
+                                data-gender="<?= htmlspecialchars($row['gender']); ?>"
+                                data-date="<?= htmlspecialchars($row['date_added']); ?>"
+                                data-status="<?= htmlspecialchars($row['status']); ?>"
+                                data-vaccinated="<?= htmlspecialchars($row['vaccinated']); ?>"
+                                data-description="<?= htmlspecialchars($row['description']); ?>"
+                                data-photo="<?= htmlspecialchars($row['photo']); ?>">
+                                <i class="fas fa-info-circle"></i> View Details</button>
                             <button class="btn btn-adopt adopt-btn" data-id="<?php echo htmlspecialchars($row['pet_id']); ?>" data-pet="<?php echo htmlspecialchars($row['petName']); ?>"><i class="fas fa-heart"></i> Adopt Me</button>
                         </div>
                     </div>
                 </div>
             <?php } ?>
         </div>
+
+        <div class="pagination-controls">
+            <?php if ($page > 1): ?>
+                <a class="pagination-btn" href="?page=<?= $page - 1 ?>"><i class="fa fa-chevron-left"></i> Previous</a>
+            <?php else: ?>
+                <span class="pagination-btn" style="opacity: 0.5;"><i class="fa fa-chevron-left"></i> Previous</span>
+            <?php endif; ?>
+
+            <div class="page-numbers">
+                <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                    <a class="pagination-btn <?= ($i == $page) ? 'active' : '' ?>" href="?page=<?= $i ?>"><?= $i ?></a>
+                <?php endfor; ?>
+            </div>
+
+            <?php if ($page < $totalPages): ?>
+                <a class="pagination-btn" href="?page=<?= $page + 1 ?>">Next <i class="fa fa-chevron-right"></i></a>
+            <?php else: ?>
+                <span class="pagination-btn" style="opacity: 0.5;">Next <i class="fa fa-chevron-right"></i></span>
+            <?php endif; ?>
+        </div>
     </main>
 
     <?php include '../Includes/User/Footer.php'; ?>
 
     <?php include '../Includes/RequestFormModal.php'; ?>
+
+    <?php include '../Includes/PetDetailModal.php'; ?>
 
     <script>
         // Modal functionality for demonstration purposes only
@@ -104,6 +154,54 @@ $pet = new Pet();
             const closeModal = document.getElementById('closeModal');
             const petNameSpan = document.getElementById('petName');
             const adoptionForm = document.getElementById('adoptionForm');
+
+            const viewBtns = document.querySelectorAll('.btn-view');
+            const petModalOverlay = document.querySelector('.pet-modal-overlay');
+            const closeBtn = petModalOverlay.querySelector('.pet-close-btn');
+
+            viewBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Get data from button
+                    const petName = btn.getAttribute('data-name');
+                    const petType = btn.getAttribute('data-type');
+                    const breed = btn.getAttribute('data-breed');
+                    const age = btn.getAttribute('data-age');
+                    const gender = btn.getAttribute('data-gender');
+                    const dateAdded = btn.getAttribute('data-date');
+                    const status = btn.getAttribute('data-status');
+                    const vaccinated = btn.getAttribute('data-vaccinated') === "1" ? "Yes" : "No";
+                    const description = btn.getAttribute('data-description');
+                    const photo = btn.getAttribute('data-photo');
+
+                    // Populate modal
+                    document.getElementById("petModalPhoto").src = photo;
+                    document.getElementById("petModalPhoto").alt = petName;
+
+                    document.getElementById("petNameValue").textContent = petName;
+                    document.getElementById("petTypeValue").textContent = petType;
+                    document.getElementById("petBreedValue").textContent = breed;
+                    document.getElementById("petAgeValue").textContent = age;
+                    document.getElementById("petGenderValue").textContent = gender;
+                    document.getElementById("petDateAddedValue").textContent = dateAdded;
+                    document.getElementById("petStatusValue").textContent = status;
+                    document.getElementById("petVaccinatedValue").textContent = vaccinated;
+                    document.getElementById("petDescriptionText").textContent = description;
+
+                    // Show modal
+                    petModalOverlay.classList.add('active');
+                });
+            });
+
+            // Function to close modal
+            closeBtn.addEventListener('click', () => {
+                petModalOverlay.classList.remove('active');
+            });
+
+            petModalOverlay.addEventListener('click', (e) => {
+                if (e.target === petModalOverlay) {
+                    petModalOverlay.classList.remove('active');
+                }
+            });
 
             // Show modal when "Adopt Me" is clicked
             adoptButtons.forEach(button => {
@@ -126,30 +224,6 @@ $pet = new Pet();
                 if (e.target === modal) {
                     modal.classList.remove('active');
                 }
-            });
-
-            // View Details button functionality
-            const viewDetailButtons = document.querySelectorAll('.btn-details');
-            viewDetailButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const petCard = this.closest('.pet-card');
-                    const petName = petCard.querySelector('.pet-name').textContent;
-                    alert(`Details for ${petName}:\n\nThis would show more detailed information about the pet in a real system.\n\nFeatures might include:\n• Full medical history\n• Behavioral notes\n• Adoption requirements\n• More photos`);
-                });
-            });
-
-            // Filter functionality (visual only)
-            const statusFilter = document.getElementById('status-filter');
-            const petCards = document.querySelectorAll('.pet-card');
-
-            statusFilter.addEventListener('change', function() {
-                const showAdopted = this.value === 'all';
-
-                petCards.forEach(card => {
-                    if (card.classList.contains('adopted')) {
-                        card.style.display = showAdopted ? 'block' : 'none';
-                    }
-                });
             });
         });
     </script>
