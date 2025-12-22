@@ -113,8 +113,8 @@
 
             <nav>
                 <ul id="mainNav">
-                    <li><a href="../View/LandingPage.php" class="active">Home</a></li>
-                    <li><a href="../View/UserDashboard.php" class="cta-button">Adopt Now</a></li>
+                    <li><a href="/pet-adoption/" class="active">Home</a></li>
+                    <li><a href="/Pet-Adoption/View/AvailablePets.php" class="cta-button">Adopt Now</a></li>
                 </ul>
             </nav>
         </div>

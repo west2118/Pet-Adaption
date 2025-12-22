@@ -4,6 +4,23 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </div>
 
+<?php
+
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ../View/login.php');
+    exit();
+}
+
+require_once '../Model/user.php';
+$user = new User();
+$user_login = null;
+if (isset($_SESSION['user_id'])) {
+    $user_login = $user->getUserById($_SESSION['user_id']);
+}
+
+?>
+
 <aside class="sidebar">
     <div class="logo">
         <i class="fas fa-paw"></i>
@@ -20,11 +37,13 @@
         <li><a href="../View/AdminListOfUsers.php"><i class="fas fa-users"></i> <span>List of Admins</span></a></li>
     </ul>
 
-    <div class="admin-info">
-        <div class="admin-avatar">JD</div>
-        <div class="admin-details">
-            <h4>Jane Doe</h4>
-            <p>Administrator</p>
+    <div class="sidebar-footer">
+        <div class="admin-info">
+            <h3>Welcome,</h3>
+            <span>Admin <?php echo $user_login['firstName'] ?></span>
         </div>
+        <a href="../Controllers/logout.php" class="logout-btn">
+            <span><i class="fa-solid fa-right-from-bracket"></i></span>
+        </a>
     </div>
 </aside>

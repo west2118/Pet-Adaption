@@ -44,7 +44,7 @@
                         <div class="d-grid mb-4">
                             <button type="submit" name="login" class="btn btn-login"> Login
                             </button>
-                            <a class="btn btn-cancel" onclick="window.location.href='/lost&found-system/'"> Cancel
+                            <a class="btn btn-cancel" onclick="window.location.href='/pet-adoption/'"> Cancel
                             </a>
                         </div>
                     </form>

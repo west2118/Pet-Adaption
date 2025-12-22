@@ -242,7 +242,7 @@ $ref_number = isset($_SESSION['ref_number']) ? $_SESSION['ref_number'] : "";
 
         <p>Thank you for your interest in adopting a pet. Your adoption request has been successfully submitted and is now being processed by our team.</p>
 
-        <p>Please check your <strong class="email-highlight">email</strong> regularly for updates regarding your adoption application. We'll contact you within 3-5 business days.</p>
+        <p>Please check your <strong class="email-highlight">email</strong> regularly for updates regarding your adoption application.</p>
 
         <div class="ref-number-container">
             <p>Your application reference number:</p>
@@ -251,7 +251,7 @@ $ref_number = isset($_SESSION['ref_number']) ? $_SESSION['ref_number'] : "";
 
         <p>Please save this reference number for future communication about your application.</p>
 
-        <a href="/pet-adoption/index.php" class="btn">
+        <a href="/pet-adoption/" class="btn">
             <i class="fas fa-home"></i> Back to Homepage
         </a>
 

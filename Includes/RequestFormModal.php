@@ -49,7 +49,7 @@
 
             <div class="form-actions">
                 <button type="submit" name="submit" class="btn btn-submit">Submit Adoption Inquiry</button>
-                <button type="button" class="btn btn-cancel">Cancel</button>
+                <button type="button" class="btn btn-cancel" id="btn-cancel">Cancel</button>
             </div>
         </form>
     </div>
