@@ -165,7 +165,7 @@
             <h2>Request Approved</h2>
         </div>
 
-        <form method="POST" action="../Controllers/action_request.php">
+        <form id="approvedForm" method="POST" action="../Controllers/action_request.php">
             <div class="approved-modal-body">
                 <input type="hidden" name="request_id" id="requestId">
                 <input type="hidden" name="pet_id" id="petId">

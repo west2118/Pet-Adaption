@@ -37,9 +37,9 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         $email = $_POST['email'];
         $fullName = $_POST['fullName'];
 
-        $approveRequest = $request->approveRequest($request_id, $pet_id);
+        $rejectedUsers = $request->approveRequest($request_id, $pet_id);
 
-        if ($approveRequest) {
+        if ($rejectedUsers !== false) {
             $subject = "Pet Adoption: Request Approved Notification";
             $message = "Dear $fullName,\n\nWe are pleased to inform you that your adoption request for $petName has been approved.\n\nReference Number: $ref_number\n\nPlease visit the adoption center to proceed with the adoption.\n\nThank you,\nHappy Paws Team";
             // Send email
@@ -60,6 +60,35 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
                 $mail->Body = $message;
 
                 $mail->send();
+
+                foreach ($rejectedUsers as $user) {
+                    $mail = new PHPMailer(true);
+                    $mail->isSMTP();
+                    $mail->Host = 'smtp.gmail.com';
+                    $mail->SMTPAuth = true;
+                    $mail->Username = 'amandasmurf21@gmail.com';
+                    $mail->Password = 'pvdheeymsvdhlncm';
+                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                    $mail->Port = 587;
+
+                    $mail->setFrom('amandasmurf21@gmail.com', 'Happy Paws Team');
+                    $mail->addAddress($user['email'], $user['firstName']);
+                    $mail->isHTML(false);
+                    $mail->Subject = "Pet Adoption Request Update";
+                    $mail->Body =
+                        $message =
+                        "Dear {$user['firstName']} {$user['lastName']},\n\n"
+                        . "Thank you for your interest in adopting a pet from our adoption center.\n\n"
+                        . "After careful review, we regret to inform you that your adoption request for {$petName} has been declined at this time.\n\n"
+                        . "This decision may be due to availability, eligibility requirements, or other considerations. "
+                        . "We encourage you to continue exploring other pets available for adoption, as new pets are added regularly.\n\n"
+                        . "If you have any questions or would like more information, feel free to contact our team.\n\n"
+                        . "Thank you for your understanding and continued interest in giving a pet a loving home.\n\n"
+                        . "Sincerely,\n"
+                        . "Pet Adoption Team";
+
+                    $mail->send();
+                }
 
                 header("Location: ../View/AdminAdoptionRequests.php");
                 exit();

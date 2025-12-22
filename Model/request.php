@@ -84,19 +84,42 @@ class Request
 
     public function approveRequest($requestId, $petId)
     {
-        // Update pet status
+        // Get rejected users FIRST
+        $getRejectedSql = "
+            SELECT firstName, lastName, email
+            FROM tbl_requests
+            WHERE pet_id = ? AND request_id != ? AND status = 'pending'
+        ";
+        $stmtGet = $this->conn->prepare($getRejectedSql);
+        $stmtGet->bind_param("ii", $petId, $requestId);
+        $stmtGet->execute();
+        $rejectedUsers = $stmtGet->get_result()->fetch_all(MYSQLI_ASSOC);
+
+        // Approve pet
         $petSql = "UPDATE tbl_pets SET status = 'approved' WHERE pet_id = ?";
         $stmt1 = $this->conn->prepare($petSql);
         $stmt1->bind_param("i", $petId);
         $stmt1->execute();
 
-        // Update request status
-        $requestSql = "UPDATE tbl_requests SET status = 'approved' WHERE request_id = ?";
-        $stmt2 = $this->conn->prepare($requestSql);
+        // Approve selected request
+        $approveSql = "UPDATE tbl_requests SET status = 'approved' WHERE request_id = ?";
+        $stmt2 = $this->conn->prepare($approveSql);
         $stmt2->bind_param("i", $requestId);
         $stmt2->execute();
 
-        return $stmt1->affected_rows > 0 && $stmt2->affected_rows > 0;
+        // Reject others
+        $rejectSql = "
+            UPDATE tbl_requests
+            SET status = 'rejected'
+            WHERE pet_id = ? AND request_id != ?
+        ";
+        $stmt3 = $this->conn->prepare($rejectSql);
+        $stmt3->bind_param("ii", $petId, $requestId);
+        $stmt3->execute();
+
+        $this->conn->commit();
+
+        return $rejectedUsers;
     }
 
     public function rejectRequest($requestId)

@@ -114,8 +114,8 @@ $totalPendingRequests = $request->countPendingRequests();
                                         <td><?php echo ucfirst(strtolower(htmlspecialchars($row['petType']))); ?></td>
                                         <td><?php echo htmlspecialchars($row['age']); ?></td>
                                         <td>
-                                            <span class="status-badge status-adopted">
-                                                <?php echo ucfirst(strtolower(htmlspecialchars($row['status']))); ?>
+                                            <span class="status-preview status-<?php echo strtolower($row['status']); ?>">
+                                                <?php echo ucfirst(htmlspecialchars($row['status'])); ?>
                                             </span>
                                         </td>
                                         <td><?php echo htmlspecialchars($row['date_added']); ?></td>

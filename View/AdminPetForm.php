@@ -28,7 +28,7 @@ $pet = new Pet();
             </h1>
             <a href="../View/AdminPets.php" class="back-button">
                 <i class="fas fa-arrow-left"></i>
-                Back to Dashboard
+                Back to Manage Pets
             </a>
         </header>
 
@@ -175,7 +175,7 @@ $pet = new Pet();
 
                             <!-- Form Actions -->
                             <div class="form-actions">
-                                <a href="dashboard.php" class="btn btn-cancel">
+                                <a href="../View/AdminPets.php" class="btn btn-cancel">
                                     <i class="fas fa-times"></i>
                                     Cancel
                                 </a>
@@ -314,7 +314,7 @@ $pet = new Pet();
 
                         <!-- Form Actions -->
                         <div class="form-actions">
-                            <a href="dashboard.php" class="btn btn-cancel">
+                            <a href="../View/AdminPets.php" class="btn btn-cancel">
                                 <i class="fas fa-times"></i>
                                 Cancel
                             </a>
@@ -327,10 +327,6 @@ $pet = new Pet();
                 <?php } ?>
             </div>
         </main>
-
-        <footer class="page-footer">
-            <p>Pet Management System &copy; 2023 | Use the form above to add a new pet to the system</p>
-        </footer>
     </div>
 </body>
 

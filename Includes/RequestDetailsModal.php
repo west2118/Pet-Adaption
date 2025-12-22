@@ -56,7 +56,6 @@
         border-radius: 20px;
         font-size: 14px;
         font-weight: 500;
-        text-transform: uppercase;
         letter-spacing: 0.5px;
     }
 

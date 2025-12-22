@@ -132,7 +132,6 @@
         font-size: 0.9rem;
         margin-bottom: 6px;
         display: block;
-        text-transform: uppercase;
         letter-spacing: 0.5px;
     }
 

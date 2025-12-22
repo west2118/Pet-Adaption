@@ -31,7 +31,7 @@ if (isset($_SESSION['user_id'])) {
     </div>
 
     <ul class="nav-links">
-        <li><a href="../View/AdminDashboard.php" class="active"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+        <li><a href="../View/AdminDashboard.php"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
         <li><a href="../View/AdminPets.php"><i class="fas fa-dog"></i> <span>Manage Pets</span></a></li>
         <li><a href="../View/AdminAdoptionRequests.php"><i class="fas fa-file-alt"></i> <span>Adoption Requests</span></a></li>
         <li><a href="../View/AdminListOfUsers.php"><i class="fas fa-users"></i> <span>List of Admins</span></a></li>
@@ -47,3 +47,16 @@ if (isset($_SESSION['user_id'])) {
         </a>
     </div>
 </aside>
+
+<script>
+    // Sidebar active link based on current page
+    const sidebarLinks = document.querySelectorAll('.nav-links a');
+    const currentPage = window.location.pathname.split('/').pop(); // gets current file name
+
+    sidebarLinks.forEach(link => {
+        const linkPage = link.getAttribute('href').split('/').pop();
+        if (linkPage === currentPage) {
+            link.classList.add('active');
+        }
+    });
+</script>

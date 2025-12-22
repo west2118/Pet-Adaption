@@ -134,8 +134,11 @@ $totalCompletedRequests = $request->countCompletedRequests();
                                     </div>
                                 </td>
                                 <td><?php echo htmlspecialchars($row['dateSubmitted']); ?></td>
-                                <td><span class="status-badge status-pending"><?php echo ucfirst(strtolower(htmlspecialchars($row['status']))); ?>
-                                    </span></td>
+                                <td>
+                                    <span class="status-badge status-<?php echo strtolower($row['status']); ?>">
+                                        <?php echo ucfirst(strtolower(htmlspecialchars($row['status']))); ?>
+                                    </span>
+                                </td>
                                 <td>
                                     <div class="requester-info">
                                         <p><i class="fas fa-envelope"></i> <?php echo htmlspecialchars($row['email']); ?></p>
@@ -334,6 +337,13 @@ $totalCompletedRequests = $request->countCompletedRequests();
             document.querySelectorAll('.btn-view-close').forEach(btn => {
                 btn.addEventListener('click', () => {
                     detailsModal.style.display = 'none';
+                });
+            });
+
+            document.querySelectorAll('.btn-close').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    approvedModal.style.display = 'none';
+                    rejectedModal.style.display = 'none';
                 });
             });
 
